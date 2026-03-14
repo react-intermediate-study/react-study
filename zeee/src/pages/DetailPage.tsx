@@ -1,7 +1,8 @@
-import { useParams, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useState } from 'react'
 import DetailTabs from '../components/detail/DetailTabs'
 import { titleMap, contentMap } from '../data/studyData'
+import DetailHeader from '../components/detail/DetailHeader'
 
 export default function DetailPage() {
   const { topic } = useParams()
@@ -15,8 +16,7 @@ export default function DetailPage() {
 
   return (
     <main>
-      <Link to="/">← 홈으로</Link>
-      <h1>{title}</h1>
+<DetailHeader title={title} />
       <DetailTabs activeTab={activeTab} onTabChange={setActiveTab} />
       <p>{content}</p>
     </main>
