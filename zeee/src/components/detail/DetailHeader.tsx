@@ -7,7 +7,7 @@ interface DetailHeaderProps {
 export default function DetailHeader({ title }: DetailHeaderProps) {
   return (
     <div>
-      <Link to="/">← 홈으로</Link>
+      <Link to="/">← 홈으로 이동</Link>
       <h1>{title}</h1>
     </div>
   )
