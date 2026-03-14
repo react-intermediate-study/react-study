@@ -1,33 +1,24 @@
-import { Link, useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { useState } from 'react'
 import DetailTabs from '../components/detail/DetailTabs'
-import Demo from '../components/content/Demo'
-import CodeCompare from '../components/content/CodeCompare'
-import Guide from '../components/content/Guide'
-
+import { titleMap, contentMap } from '../data/studyData'
 
 export default function DetailPage() {
   const { topic } = useParams()
-    const [activeTab, setActiveTab] = useState('demo')
+  const [activeTab, setActiveTab] = useState('demo')
 
-
-  const titleMap: Record<string, string> = {
-    srp: 'SRP (Single Responsibility Principle)',
-    container: 'Container Pattern',
-    compound: 'Compound Component',
-  }
-
-    const title = titleMap[topic ?? ""] ?? "Unknown Topic"
+  const title = titleMap[topic ?? ''] ?? 'Unknown Topic'
+  const content =
+    contentMap[topic as 'srp' | 'container' | 'compound']?.[
+      activeTab as 'demo' | 'code' | 'guide'
+    ] ?? '알 수 없는 주제입니다.'
 
   return (
     <main>
-        <Link to="/">← 홈으로</Link>
+      <Link to="/">← 홈으로</Link>
       <h1>{title}</h1>
       <DetailTabs activeTab={activeTab} onTabChange={setActiveTab} />
-
-      {activeTab === 'demo' && <Demo topic={topic ?? ''} />}
-      {activeTab === 'code' && <CodeCompare topic={topic ?? ''} />}
-      {activeTab === 'guide' && <Guide topic={topic ?? ''} />}
-            </main>
+      <p>{content}</p>
+    </main>
   )
 }
