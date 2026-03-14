@@ -6,7 +6,7 @@ export default function StudyListSection() {
     <section>
       <h2>학습 주제</h2>
 
-      <div>
+      <div className='card-grid'>
         {studyList.map((study) => (
           <StudyCard
             key={study.topic}

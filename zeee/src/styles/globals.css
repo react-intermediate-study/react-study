@@ -5,3 +5,8 @@ body {
   font-family: Pretendard Variable, Pretendard, sans-serif;
 }
 
+.card-grid {
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+gap: 20px;
+}
