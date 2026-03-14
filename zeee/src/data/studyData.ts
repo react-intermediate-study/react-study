@@ -21,3 +21,20 @@
       guide: 'Compound 가이드 내용입니다.',
     },
   }
+export const studyList = [
+  {
+    topic: 'srp',
+    title: 'SRP',
+    description: '하나의 컴포넌트가 하나의 책임만 가지도록 분리하는 원칙입니다.',
+  },
+  {
+    topic: 'container',
+    title: 'Container Pattern',
+    description: '로직과 UI를 분리해서 컴포넌트 역할을 명확하게 나누는 패턴입니다.',
+  },
+  {
+    topic: 'compound',
+    title: 'Compound Component',
+    description: '관련된 하위 컴포넌트를 함께 설계해 유연하게 조합하는 패턴입니다.',
+  },
+]
