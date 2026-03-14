@@ -4,7 +4,8 @@ interface DetailTabsProps {
 }
 
 export default function DetailTabs({
-  activeTab,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    activeTab,
   onTabChange,
 }: DetailTabsProps) {
   return (

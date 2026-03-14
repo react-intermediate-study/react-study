@@ -1,6 +1,10 @@
 import { Link, useParams } from 'react-router-dom'
 import { useState } from 'react'
 import DetailTabs from '../components/detail/DetailTabs'
+import Demo from '../components/content/Demo'
+import CodeCompare from '../components/content/CodeCompare'
+import Guide from '../components/content/Guide'
+
 
 export default function DetailPage() {
   const { topic } = useParams()
@@ -21,6 +25,9 @@ export default function DetailPage() {
       <h1>{title}</h1>
       <DetailTabs activeTab={activeTab} onTabChange={setActiveTab} />
 
-      <p>현재 탭: {activeTab}</p>    </main>
+      {activeTab === 'demo' && <Demo topic={topic ?? ''} />}
+      {activeTab === 'code' && <CodeCompare topic={topic ?? ''} />}
+      {activeTab === 'guide' && <Guide topic={topic ?? ''} />}
+            </main>
   )
 }
