@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 interface HeaderProps {
     title: string;
     description: string;
@@ -6,10 +8,19 @@ interface HeaderProps {
 }
 
 export default function Header({ title, description, showBackButton, badgeLabel }: HeaderProps) {
+    const navigate = useNavigate();
+
     return (
         <header className="flex bg-white w-full py-7 items-center px-6 shadow-xs border-b border-gray-100">
             <div className="flex flex-col justify-center w-full max-w-6xl mx-auto p-4">
-                {showBackButton && <button>← 돌아가기</button>}
+                {showBackButton && (
+                    <button 
+                        onClick={() => navigate('/')}
+                        className="flex items-center text-sm font-medium text-gray-500 hover:text-slate-900 transition-colors tracking-wider mb-4 cursor-pointer"
+                    >
+                        <span className="mr-1">←</span> 돌아가기
+                    </button>
+                )}
                 {badgeLabel && (
                     <div className="flex items-center gap-2 mb-3">
                         <div className="flex items-center justify-center w-8 h-8 bg-[#0072F5] text-white rounded-xl font-bold text-sm">
