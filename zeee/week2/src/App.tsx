@@ -9,6 +9,7 @@ const correctPassword = "abc1234!"
 const [passwordError, setPasswordError] = useState("")
 const [loginFail, setLoginFail] = useState("")
 const [loginSuccess, setLoginSuccess] = useState("")
+const passwordRegex = /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+~`\-={}[\]:;"'<>,.?/\\]).{8,}$/
 
   return (
     <main>
@@ -17,6 +18,7 @@ const [loginSuccess, setLoginSuccess] = useState("")
                 setEmailError("")
         setPasswordError("")
         setLoginFail("")
+        setLoginSuccess("")
         let hasError = false
         console.log(email, password)
 
@@ -24,8 +26,9 @@ const [loginSuccess, setLoginSuccess] = useState("")
           setEmailError("이메일이 형식에 맞지 않습니다")
           hasError = true
         }
-        if (password.length < 8) {
+        if (!passwordRegex.test(password)) {
 setPasswordError("비밀번호가 형식에 맞지 않습니다.")
+
 hasError = true
         }
         if (hasError) return 
@@ -33,7 +36,7 @@ hasError = true
           setLoginFail("이메일 또는 비밀번호가 올바르지 않습니다.")
           return
         }
-        else {
+         {
           setLoginSuccess("로그인에 성공했습니다.")
           console.log("로그인 성공")
         }
@@ -66,6 +69,7 @@ hasError = true
 
         <button type="submit">제출하기</button>
               {loginFail && <p>{loginFail}</p>}
+              {loginSuccess && <p>{loginSuccess}</p>}
 
       </form>
     </main>
