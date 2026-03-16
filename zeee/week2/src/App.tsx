@@ -36,10 +36,9 @@ hasError = true
           setLoginFail("이메일 또는 비밀번호가 올바르지 않습니다.")
           return
         }
-         {
+        
           setLoginSuccess("로그인에 성공했습니다.")
           console.log("로그인 성공")
-        }
 
         }}>
         <h1>로그인 화면</h1>
