@@ -1,10 +1,14 @@
 import { useState } from "react"
 
 function App() {
+  const correctEmail = "test@example.com"
+const correctPassword = "abc1234!"
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [emailError, setEmailError] = useState("")
 const [passwordError, setPasswordError] = useState("")
+const [loginFail, setLoginFail] = useState("")
+const [loginSuccess, setLoginSuccess] = useState("")
 
   return (
     <main>
@@ -12,6 +16,7 @@ const [passwordError, setPasswordError] = useState("")
         (e)=>{e.preventDefault() 
                 setEmailError("")
         setPasswordError("")
+        setLoginFail("")
         let hasError = false
         console.log(email, password)
 
@@ -23,8 +28,15 @@ const [passwordError, setPasswordError] = useState("")
 setPasswordError("비밀번호가 형식에 맞지 않습니다.")
 hasError = true
         }
-        if (hasError) return
-
+        if (hasError) return 
+        if (email !== correctEmail || password !== correctPassword) {
+          setLoginFail("이메일 또는 비밀번호가 올바르지 않습니다.")
+          return
+        }
+        else {
+          setLoginSuccess("로그인에 성공했습니다.")
+          console.log("로그인 성공")
+        }
 
         }}>
         <h1>로그인 화면</h1>
@@ -53,6 +65,8 @@ hasError = true
         </div>
 
         <button type="submit">제출하기</button>
+              {loginFail && <p>{loginFail}</p>}
+
       </form>
     </main>
   );
