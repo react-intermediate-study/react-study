@@ -1,161 +1,110 @@
-import { useReducer } from "react"
-
-
-type State = {
-email: string
-  password: string
-  emailError: string
-  passwordError: string
-  loginFail: string
-  loginSuccess: string
-}
-
-type Action =
-  | { type: "CHANGE_EMAIL"; payload: string }
-  | { type: "CHANGE_PASSWORD"; payload: string }
-  | { type: "SET_EMAIL_ERROR"; }
-  | { type: "SET_PASSWORD_ERROR"; }
-   | { type: "SET_LOGIN_FAIL"; }
-  | { type: "SET_LOGIN_SUCCESS"; }
-  | { type: "RESET_MESSAGES"; }
-  | { type: "RESET_FORM"; }
-  | { type: "CLEAR_EMAIL_ERROR" }
-| { type: "CLEAR_PASSWORD_ERROR" }
-
-
-
-
- function reducer(state:State, action:Action):State {
-  switch( action.type) {
-    case "CHANGE_EMAIL":
-      return{...state, email:action.payload,}
-    case "CHANGE_PASSWORD" :
-      return {
-        ...state, password: action.payload,
-      }
-      case "SET_EMAIL_ERROR" :
-        return{...state, emailError:"이메일이 형식에 맞지 않습니다."}
-            case "SET_PASSWORD_ERROR" :
-        return{...state, passwordError:"비밀번호가 형식에 맞지 않습니다."}
-            case "SET_LOGIN_FAIL" :
-        return{...state, loginFail:"이메일 또는 비밀번호가 틀렸습니다."}
-            case "SET_LOGIN_SUCCESS" :
-        return{...state, loginSuccess:"로그인에 성공했습니다."}
-            case "RESET_MESSAGES" :
-        return{...state, emailError:"", passwordError:"", loginFail:"", loginSuccess:""}
-            case "RESET_FORM" :
-        return{...state, email:"", password:""}
-            case "CLEAR_EMAIL_ERROR":
-        return {...state, emailError:""}
-        case "CLEAR_PASSWORD_ERROR":
-          return {...state, passwordError:""}
-
-      default: return state
-  }
-  
-}
-
-const initialState:State = {
-  email: "",
-  password: "",
-  emailError: "",
-  passwordError: "",
-  loginFail: "",
-  loginSuccess: ""
-}
-
+import { useLoginForm } from "./hooks/useLoginForm";
 
 function App() {
-  const correctEmail = "test@example.com"
-const correctPassword = "abc1234!"
-const passwordRegex = /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+~`\-={}[\]:;"'<>,.?/\\]).{8,}$/
-
-const [state, dispatch] = useReducer(reducer, initialState)
-
-
+  const {
+    state,
+    handleEmailChange,
+    handlePasswordChange,
+    handleSubmit,
+    closeModal,
+  } = useLoginForm();
 
   return (
-    <main>
-      <form noValidate onSubmit={
-        (e)=>{e.preventDefault()
-dispatch({type:"RESET_MESSAGES"})
-        let hasError = false
-        console.log(state.email, state.password)
+    <main className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
+      <div className="w-full max-w-md">
+        <form
+          className="rounded-2xl bg-white p-8 shadow-lg"
+          noValidate
+          onSubmit={handleSubmit}
+        >
+          <h1 className="mb-8 text-center text-3xl font-bold text-gray-900">
+            로그인 화면
+          </h1>
+          <div className="mb-5">
+            <label
+              className="block mb-2 mr-4 text-sm font-medium text-gray-700 "
+              htmlFor="email"
+            >
+              이메일 입력
+            </label>
+            <input
+              className={`w-full rounded-lg border px-4 py-3 text-sm outline-none ${
+                state.emailError
+                  ? "border-red-500 focus:ring-2 focus:ring-red-200"
+                  : "border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+              }`}
+              id="email"
+              type="email"
+              placeholder="이메일을 입력해주세요."
+              value={state.email}
+              onChange={handleEmailChange}
+            />
+            {state.emailError && (
+              <p className="mt-2 text-sm text-red-500">{state.emailError}</p>
+            )}
+          </div>
+          <div className="mb-5">
+            <label
+              className="block mb-2 mr-4 text-sm font-medium text-gray-700 "
+              htmlFor="password"
+            >
+              비밀번호 입력
+            </label>
+            <input
+              className={`w-full rounded-lg border px-4 py-3 text-sm outline-none ${
+                state.passwordError
+                  ? "border-red-500 focus:ring-2 focus:ring-red-200"
+                  : "border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+              }`}
+              id="password"
+              type="password"
+              value={state.password}
+              placeholder="비밀번호를 입력해주세요. "
+              onChange={handlePasswordChange}
+            />
+            {state.passwordError && (
+              <p className="mt-2 text-sm text-red-500">{state.passwordError}</p>
+            )}
+          </div>
 
-        if (!state.email.includes("@")) {
-dispatch({type:"SET_EMAIL_ERROR"})
-hasError = true
-        }
-        if (!passwordRegex.test(state.password)) {
-dispatch({type:"SET_PASSWORD_ERROR"})
-hasError = true
-        }
-        if (hasError) return 
-        if (state.email !== correctEmail || state.password !== correctPassword) {
-        dispatch({type:"SET_LOGIN_FAIL"})
-        alert("이메일 또는 비밀번호가 올바르지 않습니다.")
-        return
-        }
-        
-          dispatch({type: "SET_LOGIN_SUCCESS"})
-          alert("로그인에 성공했습니다.")
+          <button
+            className="w-full rounded-lg bg-blue-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
+            type="submit"
+          >
+            제출하기
+          </button>
+          {(state.loginFail || state.loginSuccess) && (
+            <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
+              <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl">
+                <div
+                  className={`mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full ${
+                    state.loginFail
+                      ? "bg-red-100 text-red-600"
+                      : "bg-green-100 text-green-600"
+                  }`}
+                >
+                  <span className="text-xl font-bold">
+                    {state.loginFail ? "!" : "✓"}
+                  </span>
+                </div>
+                <h2 className="text-center text-lg font-semibold text-gray-900">
+                  {state.loginFail ? "로그인 실패" : "로그인 완료"}
+                </h2>
+                <p className="mt-2 mb-3 text-center text-sm text-gray-800">
+                  {state.loginFail || state.loginSuccess}
+                </p>
 
-        }}>
-        <h1>로그인 화면</h1>
-        <div>
-          <label htmlFor="email">이메일 입력</label>
-          <input
-            id="email"
-            type="email"
-            placeholder="이메일을 입력해주세요."
-            value={state.email}
-            onChange={(e) => {
-                const value = e.target.value
-
-  dispatch({
-    type: "CHANGE_EMAIL",
-    payload: value,
-  })
-        if (!state.email.includes("@")) {
-dispatch({type:"SET_EMAIL_ERROR"})
-}              
-
-else { dispatch({type:"CLEAR_EMAIL_ERROR"})
-}}}
-            
-         />
-         {state.emailError && <p>{state.emailError}</p>}
-        </div>
-        <div>
-          <label htmlFor="password">비밀번호 입력</label>
-          <input
-            id="password"
-            type="password"
-            value={state.password}
-            placeholder="비밀번호를 입력해주세요. "
-onChange={(e) => {
-  const value = e.target.value
-
-  dispatch({
-    type: "CHANGE_PASSWORD",
-    payload: value,
-  })
-
-  if (!passwordRegex.test(value)) {
-    dispatch({ type: "SET_PASSWORD_ERROR" })
-  } else {
-    dispatch({ type: "CLEAR_PASSWORD_ERROR" })
-  }
-}}         />
-                  {state.passwordError && <p>{state.passwordError}</p>}
-
-        </div>
-
-        <button type="submit">제출하기</button>
-              {state.loginFail && <p>{state.loginFail}</p>}
-              {state.loginSuccess && <p>{state.loginSuccess}</p>}
-
-      </form>
+                <button
+                  onClick={closeModal}
+                  className="w-full rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
+                >
+                  확인
+                </button>
+              </div>
+            </div>
+          )}
+        </form>
+      </div>
     </main>
   );
 }
