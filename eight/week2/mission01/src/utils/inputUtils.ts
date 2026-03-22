@@ -2,7 +2,7 @@ import type { KeyboardEvent } from "react";
 
 /**
  * [onKeyDown] 스페이스바 입력 자체를 차단하는 함수
- * 태그의 onKeyDown 속성에 그대로 넣rl
+ * 태그의 onKeyDown 속성에 그대로 넣기
  */
 export const blockSpaceKey = (e: KeyboardEvent<HTMLInputElement>) => {
   if (e.key === " ") {
