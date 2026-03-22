@@ -3,15 +3,10 @@ import {
   initialState,
   loginReducer,
   validate,
-  type LoginState,
 } from "../utils/auth/loginReducer";
+import type { MockLoginCredentials } from "../utils/auth/mockLogin";
 
-type LoginParams = {
-  email: string;
-  password: string;
-};
-
-type LoginFn = (params: LoginParams) => Promise<void>;
+type LoginFn = (params: MockLoginCredentials) => Promise<void>;
 
 export const useLoginForm = (loginFn?: LoginFn) => {
   const [state, dispatch] = useReducer(loginReducer, initialState);
@@ -47,11 +42,9 @@ export const useLoginForm = (loginFn?: LoginFn) => {
       }
 
       dispatch({ type: "SUCCESS" });
-    } catch (error) {
-      dispatch({
-        type: "FAIL",
-        payload: "이메일 또는 비밀번호가 올바르지 않습니다.",
-      });
+    } catch (error : any) {
+      const message = error.message;
+      dispatch({ type: "FAIL", payload: message });
     }
   };
 
