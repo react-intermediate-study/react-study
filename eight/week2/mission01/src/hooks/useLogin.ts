@@ -37,7 +37,7 @@ export const useSignIn = () => {
       return;
     }
 
-    // 3. 가상 백엔드 로그인 로직
+    // 로그인 결과 로직
     if (email === SUCCESS_USER.email && password === SUCCESS_USER.password) {
       alert(`${email}님, 환영합니다! 로그인에 성공했습니다.`);
       dispatch({ type: "RESET" });
