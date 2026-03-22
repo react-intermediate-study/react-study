@@ -34,8 +34,8 @@ export const validate = (email: string, password: string) => {
     errors.email = "올바른 이메일 형식이 아닙니다.";
   }
 
-  if (password.length < 6) {
-    errors.password = "비밀번호는 6자 이상이어야 합니다.";
+  if (!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(password)) {
+    errors.password = "8자 이상, 영문 소문자와 숫자, 특수기호를 포함해야합니다";
   }
 
   return {
@@ -59,6 +59,7 @@ export const loginReducer = (
           ...state.errors,
           email: errors.email,
           password: errors.password,
+          general: undefined,
         },
         isValid,
       };
@@ -74,6 +75,7 @@ export const loginReducer = (
           ...state.errors,
           email: errors.email,
           password: errors.password,
+          general: undefined,
         },
         isValid,
       };
