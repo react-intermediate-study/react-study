@@ -12,7 +12,7 @@ export const useSignIn = () => {
   const { email, password } = state;
 
   const handleLogin = () => {
-    // 1. 초기화 (이전 에러 지우기)
+    //초기화 (이전 에러 지우기)
     dispatch({
       type: "SET_ERRORS",
       payload: { emailError: "", passwordError: "" },
@@ -21,7 +21,7 @@ export const useSignIn = () => {
     let hasError = false;
     let errors = { emailError: "", passwordError: "" };
 
-    // 2. 유효성 검사
+    // 유효성 검사
     if (!validateEmail(email)) {
       errors.emailError = "잘못된 이메일 형식입니다.";
       hasError = true;
@@ -39,7 +39,9 @@ export const useSignIn = () => {
 
     // 3. 가상 백엔드 로그인 로직
     if (email === SUCCESS_USER.email && password === SUCCESS_USER.password) {
-      alert("로그인 성공!");
+      alert(`${email}님, 환영합니다! 로그인에 성공했습니다.`);
+      dispatch({ type: "RESET" });
+
       navigate("/");
     } else {
       dispatch({
