@@ -1,3 +1,8 @@
+export type MockLoginCredentials = {
+  email: string;
+  password: string;
+};
+
 export type MockLoginResult = {
   user: {
     id: number;
@@ -13,10 +18,7 @@ const MOCK_PASSWORD = "1234asdf@@";
 export async function mockLogin({
   email,
   password,
-}: {
-  email: string;
-  password: string;
-}): Promise<MockLoginResult> {
+}: MockLoginCredentials): Promise<MockLoginResult> {
   await new Promise((res) => setTimeout(res, 500));
 
   if (email === MOCK_EMAIL && password === MOCK_PASSWORD) {
